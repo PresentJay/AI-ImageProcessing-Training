@@ -18,8 +18,6 @@ nm_g_hist = np.zeros((256),dtype=np.float)
 nm_b_hist = np.zeros((256),dtype=np.float)
 
 
-
-
 for i in range(roi.shape[0]):
     for j in range(roi.shape[1]):
         b_hist[roi[i,j,0]] += 1

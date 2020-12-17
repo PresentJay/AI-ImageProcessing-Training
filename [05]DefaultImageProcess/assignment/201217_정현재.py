@@ -1,12 +1,24 @@
 import matplotlib.pyplot as plt
 import cv2 as cv
 import numpy as np
-import getimg
 
 
 # 이미지 불러오기
-roi = getimg.gImg('lenna', 'png')
+roi = cv.imread('C:\\Users\\PresentJay\\Desktop\\ai_ml_vision\\AI-ImageProcessing-Training\\img\\lenna.png')
+
+grey_img = np.zeros((roi.shape[0], roi.shape[1],3), dtype=np.uint8)
 equalized_roi = np.zeros((roi.shape[0], roi.shape[1], roi.shape[2]), dtype=np.uint8)
+
+# 원본 이미지를 돌면서 픽셀 하나씩 참조
+for i in range(roi.shape[0]):
+    for j in range(roi.shape[1]):
+        # OpenCV에서 이미지는 bgr채널로 이루어짐.
+        # 이미지 흑백화는 모든 채널값의 평균값을 각 채널에 뿌려준다.
+        value = roi[i,j,2]*0.299 + roi[i,j,1]*0.587 + roi[i,j,0]*0.114
+        
+        grey_img[i,j,0] = value # b 채널의 픽셀 계산
+        grey_img[i,j,1] = value # g 채널의 픽셀 계산
+        grey_img[i,j,2] = value # r 채널의 픽셀 계산
 
 r_hist = np.zeros((256),dtype=np.int)
 g_hist = np.zeros((256),dtype=np.int)
@@ -26,9 +38,9 @@ eq_b_hist = np.zeros((256),dtype=np.int)
 
 for i in range(roi.shape[0]):
     for j in range(roi.shape[1]):
-        b_hist[roi[i,j,0]] += 1
-        g_hist[roi[i,j,1]] += 1
-        r_hist[roi[i,j,2]] += 1
+        b_hist[grey_img[i,j,0]] += 1
+        g_hist[grey_img[i,j,1]] += 1
+        r_hist[grey_img[i,j,2]] += 1
 
 for _ in range(256):
     nm_b_hist[_] = b_hist[_] / (roi.shape[0]*roi.shape[1])
@@ -51,12 +63,12 @@ for _ in range(256):
 
 for i in range(roi.shape[0]):
     for j in range(roi.shape[1]):
-        equalized_roi[i,j,0] = eq_b_hist[roi[i,j,0]]
-        equalized_roi[i,j,1] = eq_g_hist[roi[i,j,1]]
-        equalized_roi[i,j,2] = eq_r_hist[roi[i,j,2]]
+        equalized_roi[i,j,0] = eq_b_hist[grey_img[i,j,0]]
+        equalized_roi[i,j,1] = eq_g_hist[grey_img[i,j,1]]
+        equalized_roi[i,j,2] = eq_r_hist[grey_img[i,j,2]]
 
 plt.subplot(1,2,1)
-b,g,r = cv.split(roi)
+b,g,r = cv.split(grey_img)
 roi_rgb = cv.merge([r,g,b])
 plt.imshow(roi_rgb)
 
