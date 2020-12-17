@@ -13,13 +13,14 @@ img = np.zeros((roi.shape[0], roi.shape[1],3), dtype=np.uint8)
 for i in range(roi.shape[0]):
     for j in range(roi.shape[1]):
         # OpenCV에서 이미지는 bgr채널로 이루어짐.
-        # 이미지 반전은 255에서 원본 픽셀값을 빼주면 적용할 수 있음.
+        # 이미지 흑백화는 모든 채널값의 평균값을 각 채널에 뿌려준다.
+        value = roi[i,j,2]*0.299 + roi[i,j,1]*0.587 + roi[i,j,0]*0.114
         
-        img[i,j,0] = 255 - roi[i,j,0] # b 채널의 픽셀 계산
-        img[i,j,1] = 255 - roi[i,j,1] # g 채널의 픽셀 계산
-        img[i,j,2] = 255 - roi[i,j,2] # r 채널의 픽셀 계산
+        img[i,j,0] = value # b 채널의 픽셀 계산
+        img[i,j,1] = value # g 채널의 픽셀 계산
+        img[i,j,2] = value # r 채널의 픽셀 계산
 
 cv.imshow('origin', roi) # 원본 이미지 출력
-cv.imshow('negative', img) # 반전된 이미지 출력
+cv.imshow('greychannel_2', img) # 반전된 이미지 출력
 cv.waitKey(0)
 cv.destroyAllWindows()

@@ -1,9 +1,10 @@
 import cv2 as cv
 import numpy as np
+import getimg
 
 
 # 이미지 불러오기
-roi = cv.imread('C:\\Users\\PresentJay\\Desktop\\ai_ml_vision\\AI-ImageProcessing-Training\\[05]DefaultImageProcess\\lenna.png')
+roi = getimg.gImg('lenna', 'png')
 
 # 원본 이미지와 같은 크기의 빈 이미지 생성
 img = np.zeros((roi.shape[0], roi.shape[1],3), dtype=np.uint8)
