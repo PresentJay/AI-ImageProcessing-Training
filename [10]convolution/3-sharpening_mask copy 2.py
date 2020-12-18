@@ -11,7 +11,7 @@ sharpening_mask = np.array([
     [0,-1,0]
 ])
 
-output_box = np.zeros((roi.shape[0],roi.shape[1]),dtype=np.uint8)
+output_box = np.zeros((roi.shape[0],roi.shape[1]))
 
 for j in range(1,roi.shape[0]-1):
     for i in range(1,roi.shape[1]-1):
@@ -21,7 +21,13 @@ for j in range(1,roi.shape[0]-1):
                 sum += roi_gray.item(j+r,i+c)* sharpening_mask.item(r+1,c+1)  #mask 값
         if np.sum(sharpening_mask)>0:
             sum //= np.sum(sharpening_mask)
+        
+        # 값을 0.0 ~ 1.0 사이의 값으로 변환
+        sum /= 255
+        
         output_box.itemset(j,i,sum)
+        
+        
 
 cv.imshow('origin',roi_gray)
 cv.imshow('sharpening_mask',output_box)
