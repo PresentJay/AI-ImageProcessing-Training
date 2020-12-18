@@ -1,6 +1,6 @@
 import cv2 as cv
 import numpy as np
-from getimg import*
+from getimg import *
 #smoothing
 roi = gImg('picture5','jpg')
 roi_gray = cv.cvtColor(roi,cv.COLOR_BGR2GRAY)
