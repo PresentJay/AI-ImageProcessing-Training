@@ -27,15 +27,19 @@ while True:
 
     # 이진화 채널 초기화
     binary = np.zeros((gray.shape[0],gray.shape[1]), dtype= np.uint8)
+    black_cnt = 0
+    white_cnt = 0
 
     for i in range(gray.shape[0]):
         for j in range(gray.shape[1]):
             if gray[i,j] >= threshold:
                 binary[i,j] = 255
+                white_cnt+=1
             else:
                 binary[i,j] = 0
+                black_cnt+=1
 
-
+    print("black = {}, white = {}".format(black_cnt, white_cnt))
     cv.imshow('binarization', binary)
     
     k = cv.waitKey(1)
