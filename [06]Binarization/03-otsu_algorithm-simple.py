@@ -7,7 +7,7 @@ from getimg import *
 """ 임계값 T를 기준으로 화소를 두 집합으로 나누었을 때,
 각 집합의 명암 분포가 균일할수록 (분산이 작을수록) 좋다. """
 
-roi = gImg('lenna', 'png')
+roi = gImg('pic1', 'JPG')
 gray = cv.cvtColor(roi,cv.COLOR_BGR2GRAY)
 
 binary = np.zeros((gray.shape[0],gray.shape[1]),dtype=np.uint8)
