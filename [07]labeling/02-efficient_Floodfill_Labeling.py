@@ -4,12 +4,12 @@ import queue
 import random
 from getimg import *
 
-# 책에 소개된 라벨링 함수
-def flood_fill4(l,j,i,label):
-    Q = queue.Queue()
-    Q.put((j,i))
-    while not Q.empty():
-        x, y = Q.get()
+def flood_fill4(l, j, i, label):
+    column_item = queue.Queue()
+    column_item.put((j,i))
+    
+    while not column_item.empty():
+        x, y = column_item.get()
         if l.item(x,y) == -1:
             left = right = x
             while l.item(left-1,y) == -1:
@@ -17,15 +17,15 @@ def flood_fill4(l,j,i,label):
             while l.item(right+1,y) == -1:
                 right +=1
             # 첫 시작지점부터 왼쪽 오른쪽으로 쭉 이동하여 라벨링 되지않은 부분들을 찾는다.
-            for c in range(left,right+1):
+            for row_item in range(left,right+1):
                 # 왼쪽부터 오른쪽까지 이동하면서 라벨링을 수행한다. (같은 열에 연속된 것들 라벨링)
-                l.itemset(c,y,label)
+                l.itemset(row_item,y,label)
                 # 만약 맨 왼쪽에서 아래나 위가 라벨링되어있지 않으면 큐에넣어 다음 반복에 라벨링을 수행한다.
-                # 뒤쪽의 조건(and (c == left or l.item(c-1,y-1) != -1))은 불필요한 좌표를 큐에 넣지않기 위함이다. 
-                if l.item(c,y-1) == -1 and (c == left or l.item(c-1,y-1) != -1):
-                    Q.put((c,y-1))
-                if l.item(c,y+1) == -1 and (c == left or l.item(c-1,y+1) != -1):
-                    Q.put((c,y+1))
+                # 뒤쪽의 조건(and (row_item == left or l.item(row_item-1,y-1) != -1))은 불필요한 좌표를 큐에 넣지않기 위함이다. 
+                if l.item(row_item,y-1) == -1 and (row_item == left or l.item(row_item-1,y-1) != -1):
+                    column_item.put((row_item,y-1))
+                if l.item(row_item,y+1) == -1 and (row_item == left or l.item(row_item-1,y+1) != -1):
+                    column_item.put((row_item,y+1))
                 # 밑의 코드역시 위와 동일한 결과를 보여주지만, 불필요한 좌표들이 큐에 들어가게 됨
                 # if l.item(c,y-1) == -1 :
                 #     Q.put((c,y-1))
